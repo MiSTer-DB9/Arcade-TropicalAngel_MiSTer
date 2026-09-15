@@ -239,6 +239,13 @@ wire         db9_remap_cmd;
 wire   [5:0] db9_remap_byte_cnt;
 wire  [15:0] db9_remap_din;
 // [MiSTer-DB9 END]
+// [MiSTer-DB9 BEGIN] - DB9 remap factory default (used until Main_MiSTer streams UIO 0xFD)
+// Derived from CONF_STR J1, same rule as db9_map.cpp; lets the core work on a stock MiSTer binary.
+// DB15:  Gas=A, Reverse=B, Start=START, Coin=SELECT
+// DB9MD: Gas=B, Reverse=C, Start=START, Coin=MODE
+wire  [35:0] db9_remap_default_db15  = 36'hFFFFFBA54;
+wire  [35:0] db9_remap_default_db9md = 36'hFFFFFBA65;
+// [MiSTer-DB9 END]
 joydb joydb (
   .clk             ( CLK_JOY         ),
   .clk_sys         ( clk_sys            ),
@@ -259,6 +266,8 @@ joydb joydb (
   .remap_cmd       ( db9_remap_cmd      ),
   .remap_byte_cnt  ( db9_remap_byte_cnt ),
   .remap_din       ( db9_remap_din      ),
+  .remap_default_db15  ( db9_remap_default_db15  ),
+  .remap_default_db9md ( db9_remap_default_db9md ),
   .joydb_1_mapped  ( joydb_1_mapped     ),
   .joydb_2_mapped  ( joydb_2_mapped     ),
   .joy_raw         ( joy_raw_payload )
